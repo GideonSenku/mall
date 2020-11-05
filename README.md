@@ -50,3 +50,15 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
      :class="{active: currentIndex === index}
      ```
    - 
+
+3. 样式设置文字过多显示`...`
+    ```css
+    .show-ellipsis {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    ```
+
+4. 自定义监听事件,不写参数默认传递子组件参数
+   > 在商品显示流行、新款、精选时用到 `$emit('tabClick',index)`传递子组件信息

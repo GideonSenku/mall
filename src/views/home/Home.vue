@@ -4,8 +4,8 @@
     <home-swiper :banners="banners"/>
     <recommend-view :recommends="recommends"/>
     <feature-view/>
-    <tab-control class="tab-control" :titles="titles" />
-    <goods-list :goods="goods.pop.list" />
+    <tab-control class="tab-control" :titles="titles" @tabClick="tabClick" />
+    <goods-list :goods="showGoods" />
     <ul>
       <li>测试1</li>
       <li>测试2</li>
@@ -141,7 +141,8 @@ export default {
         'pop': {page: 0, list: []},
         'new': {page: 0, list: []},
         'sell': {page: 0, list: []}
-      }
+      },
+      currentType: 'pop',
     }
   },
   created() {
@@ -150,7 +151,32 @@ export default {
     this._getHomeGoods('new')
     this._getHomeGoods('sell')
   },
+  computed: {
+    showGoods() {
+      return this.goods[this.currentType].list
+    }
+  },
   methods: {
+    /**
+     * 事件相关代码
+     */
+
+    tabClick(index) { // 自定义监听事件,不写参数默认传递子组件参数
+      switch (index) {
+        case 0:
+          this.currentType = 'pop'
+          break
+        case 1:
+          this.currentType = 'new'
+          break
+        case 2:
+          this.currentType = 'sell'
+          break
+      }
+    },
+    /**
+     * 网络请求相关代码
+     */
     _getMultidata() {
       getMultidata().then(res => {
         this.banners = res.data.banner.list
