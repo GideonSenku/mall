@@ -1,13 +1,14 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <scroll class="content">
+    <scroll class="content" ref="scroll">
       <home-swiper :banners="banners"/>
       <recommend-view :recommends="recommends"/>
       <feature-view/>
       <tab-control class="tab-control" :titles="titles" @tabClick="tabClick" />
       <goods-list :goods="showGoods" />
     </scroll>
+    <back-top @click.native="backClick"/>
   </div>
 </template>
 
@@ -16,6 +17,7 @@ import NavBar from 'components/common/navbar/NavBar'
 import Scroll from 'components/common/scroll/Scroll'
 import TabControl from 'components/content/tabcontrol/TabControl'
 import GoodsList from 'components/content/goods/GoodsList'
+import BackTop from 'components/content/backTop/BackTop'
 
 import HomeSwiper from './childrenComps/HomeSwiper'
 import RecommendView from './childrenComps/RecommendView'
@@ -32,7 +34,8 @@ export default {
     FeatureView,
     TabControl,
     GoodsList,
-    Scroll
+    Scroll,
+    BackTop
   },
   data() {
     return {
@@ -76,6 +79,9 @@ export default {
           break
       }
     },
+    backClick() {
+      this.$refs.scroll.scrollTo(0, 0)
+    },
     /**
      * 网络请求相关代码
      */
@@ -100,7 +106,7 @@ export default {
 
 <style scoped>
   #home {
-    padding-top: 44px;
+    /* padding-top: 44px; */
     height: 100vh; /*  vh表示相对于视框的高度 */
     position: relative;
   }
@@ -119,11 +125,16 @@ export default {
     top: 44px;
     z-index: 9;
   }
-  .content {
+  /* .content {
     position: absolute;
     top: 44px;
     bottom: 49px;
     left: 0;
     right: 0;
+  } */
+  .content {
+    height: calc(100% - 93px);
+    overflow: hidden;
+    margin-top: 44px;
   }
 </style>

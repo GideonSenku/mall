@@ -19,6 +19,11 @@ export default {
     this.bscroll = new BScroll(this.$refs.wrapper, {
       probeType: 3,
     })
+  },
+  methods: {
+    scrollTo(x, y, time = 500) {
+      this.bscroll.scrollTo(x, y, time)
+    }
   }
 }
 </script>
