@@ -1,14 +1,14 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <scroll class="content" ref="scroll">
+    <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
       <home-swiper :banners="banners"/>
       <recommend-view :recommends="recommends"/>
       <feature-view/>
       <tab-control class="tab-control" :titles="titles" @tabClick="tabClick" />
       <goods-list :goods="showGoods" />
     </scroll>
-    <back-top @click.native="backClick"/>
+    <back-top @click.native="backClick" v-show="isShowScroll"/>
   </div>
 </template>
 
@@ -48,6 +48,7 @@ export default {
         'sell': {page: 0, list: []}
       },
       currentType: 'pop',
+      isShowScroll: false
     }
   },
   created() {
@@ -79,8 +80,17 @@ export default {
           break
       }
     },
+    /**
+     * 监听返回按钮
+     */
     backClick() {
       this.$refs.scroll.scrollTo(0, 0)
+    },
+    /**
+     * 监听内容滚动，
+     */
+    contentScroll(position) {
+      this.isShowScroll = (-position.y) > 600
     },
     /**
      * 网络请求相关代码

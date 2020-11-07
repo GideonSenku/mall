@@ -65,3 +65,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 5. Vue的生命周期函数
    > 在mounted挂载后，才能拿到DOM节点
+
+6. 组件的事件监听
+   > 若要监听组件上的某些原生事件，可以在事件上加上`native`修饰符 ---> `BackTop应用场景`
+
+7. 组件`props`参数若为驼峰命名，则使用时需要改为`-`
