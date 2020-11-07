@@ -62,3 +62,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 4. 自定义监听事件,不写参数默认传递子组件参数
    > 在商品显示流行、新款、精选时用到 `$emit('tabClick',index)`传递子组件信息
+
+5. Vue的生命周期函数
+   > 在mounted挂载后，才能拿到DOM节点

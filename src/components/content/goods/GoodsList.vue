@@ -22,7 +22,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     .GoodsList {
         display: flex;
         flex-wrap: wrap;

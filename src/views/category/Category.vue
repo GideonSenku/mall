@@ -110,18 +110,33 @@ import BScroll from 'better-scroll'
 
 export default {
   name: 'Category',
+  data() {
+    return {
+      bscroll: null
+    }
+  },
   mounted() {
-    new BScroll(this.$refs.aaa, {
-      
+    this.bscroll = new BScroll(this.$refs.aaa, {
+      probeType: 3,
+      pullUpLoad: true
+    })
+
+    this.bscroll.on('scroll', (pos) => {
+      // console.log(pos)
+    })
+
+    this.bscroll.on('pullingUp', () => {
+      console.log('pullingUp')
+      this.bscroll.finishPullUp()
     })
   }
 }
 </script>
 
-<style>
+<style scoped>
   .wrapper {
     height: 150px;
-    background-color: blue;
+    background-color: rgb(148, 190, 206);
     overflow: hidden;
   }
 </style>
