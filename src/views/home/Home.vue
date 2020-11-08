@@ -1,7 +1,11 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
+    <scroll class="content" ref="scroll" 
+    :probe-type="3" 
+    @scroll="contentScroll" 
+    :pull-up-load="true" 
+    @pullingUp="loadMore">
       <home-swiper :banners="banners"/>
       <recommend-view :recommends="recommends"/>
       <feature-view/>
@@ -92,6 +96,10 @@ export default {
     contentScroll(position) {
       this.isShowScroll = (-position.y) > 600
     },
+    loadMore() {
+      this._getHomeGoods(this.currentType)
+      this.$refs.scroll.bscroll.refresh()
+    },
     /**
      * 网络请求相关代码
      */
@@ -104,10 +112,9 @@ export default {
     _getHomeGoods(type) {
       const page = this.goods[type].page + 1
       getHomeGoods(type, page).then(res => {
-        // setTimeout(() => {
           this.goods[type].list.push(...res.data.list)
           this.goods[type].page += 1
-        // }, 5000)
+          this.$refs.scroll.finishPullUp()
       })
     }
   }
@@ -118,7 +125,7 @@ export default {
   #home {
     /* padding-top: 44px; */
     height: 100vh; /*  vh表示相对于视框的高度 */
-    position: relative;
+    /* position: relative; */
   }
   .home-nav {
     background-color: var(--color-tint);
