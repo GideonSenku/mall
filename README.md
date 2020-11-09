@@ -70,3 +70,19 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
    > 若要监听组件上的某些原生事件，可以在事件上加上`native`修饰符 ---> `BackTop应用场景`
 
 7. 组件`props`参数若为驼峰命名，则使用时需要改为`-`
+
+8. 事件总线(非父子组件通信)
+   > 组件之间的层叠关系过多，但又需要监听相互之间的事件，则可以使用**事件总线**
+   ```javascript
+   // main.js
+   vue.prototype.$bus = new Vue()
+
+   // 某个组件内的事件
+   this.$bus.$emit('eventName')
+
+   // 其他组件上监听
+   this.$bus.$on('eventName')
+   ```
+
+9. 防抖debounce函数
+   > 对于refresh非常频繁的问题，进行防抖操作

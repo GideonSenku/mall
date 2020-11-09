@@ -60,6 +60,14 @@ export default {
     this._getHomeGoods('pop')
     this._getHomeGoods('new')
     this._getHomeGoods('sell')
+
+
+  },
+  mounted() {
+    const refresh = this.debounce(this.$refs.scroll.refresh, 200)
+    this.$bus.$on('itemImageLoad', () => {
+      refresh()
+    })
   },
   computed: {
     showGoods() {
@@ -67,9 +75,7 @@ export default {
     }
   },
   methods: {
-    /**
-     * 事件相关代码
-     */
+    /* 事件相关代码 */
 
     tabClick(index) { // 自定义监听事件,不写参数默认传递子组件参数
       switch (index) {
@@ -84,25 +90,28 @@ export default {
           break
       }
     },
-    /**
-     * 监听返回按钮
-     */
+    // 监听返回按钮
     backClick() {
       this.$refs.scroll.scrollTo(0, 0)
     },
-    /**
-     * 监听内容滚动，
-     */
+    // 监听内容滚动
     contentScroll(position) {
       this.isShowScroll = (-position.y) > 600
     },
     loadMore() {
       this._getHomeGoods(this.currentType)
-      this.$refs.scroll.bscroll.refresh()
     },
-    /**
-     * 网络请求相关代码
-     */
+    // 防抖函数
+    debounce(func, delay) {
+      let timer = null
+      if (timer) clearInterval(timer)
+      return function(...args) {
+        timer = setTimeout(() => {
+          func.apply(this, args)
+        }, delay)
+      }
+    },
+    /* 网络请求相关代码 */
     _getMultidata() {
       getMultidata().then(res => {
         this.banners = res.data.banner.list
@@ -123,9 +132,9 @@ export default {
 
 <style scoped>
   #home {
-    /* padding-top: 44px; */
+    padding-top: 44px;
     height: 100vh; /*  vh表示相对于视框的高度 */
-    /* position: relative; */
+    position: relative;
   }
   .home-nav {
     background-color: var(--color-tint);
@@ -142,16 +151,16 @@ export default {
     top: 44px;
     z-index: 9;
   }
-  /* .content {
+  .content {
     position: absolute;
     top: 44px;
     bottom: 49px;
     left: 0;
     right: 0;
-  } */
-  .content {
+  }
+  /* .content {
     height: calc(100% - 93px);
     overflow: hidden;
     margin-top: 44px;
-  }
+  } */
 </style>

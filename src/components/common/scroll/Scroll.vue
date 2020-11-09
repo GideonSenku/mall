@@ -42,11 +42,15 @@ export default {
   },
   methods: {
     scrollTo(x, y, time = 300) {
-      this.bscroll.scrollTo(x, y, time)
+      this.bscroll && this.bscroll.scrollTo(x, y, time)
     },
     finishPullUp() {
-      this.bscroll.finishPullUp()
+      this.bscroll && this.bscroll.finishPullUp()
+    },
+    refresh() {
+      this.bscroll && this.bscroll.refresh()
     }
+
   }
 }
 </script>
