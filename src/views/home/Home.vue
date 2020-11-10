@@ -1,15 +1,16 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+    <tab-control class="tab-control" v-show="isTabFixed" :titles="titles" @tabClick="tabClick" ref="tabControl1"/>
     <scroll class="content" ref="scroll" 
     :probe-type="3" 
     @scroll="contentScroll" 
     :pull-up-load="true" 
     @pullingUp="loadMore">
-      <home-swiper :banners="banners"/>
+      <home-swiper :banners="banners" @imageSwiperLoad="imageSwiperLoaded" />
       <recommend-view :recommends="recommends"/>
       <feature-view/>
-      <tab-control class="tab-control" :titles="titles" @tabClick="tabClick" />
+      <tab-control :titles="titles" @tabClick="tabClick" ref="tabControl2"/>
       <goods-list :goods="showGoods" />
     </scroll>
     <back-top @click.native="backClick" v-show="isShowScroll"/>
@@ -28,7 +29,7 @@ import RecommendView from './childrenComps/RecommendView'
 import FeatureView from './childrenComps/FeatureView'
 
 import { getMultidata, getHomeGoods } from 'network/home'
-
+import { debounce } from 'common/utils'
 export default {
   name: 'Home',
   components: {
@@ -52,7 +53,9 @@ export default {
         'sell': {page: 0, list: []}
       },
       currentType: 'pop',
-      isShowScroll: false
+      isShowScroll: false,
+      tabOffsetTop: 0,
+      isTabFixed: false
     }
   },
   created() {
@@ -64,7 +67,7 @@ export default {
 
   },
   mounted() {
-    const refresh = this.debounce(this.$refs.scroll.refresh, 200)
+    const refresh = debounce(this.$refs.scroll.refresh, 100)
     this.$bus.$on('itemImageLoad', () => {
       refresh()
     })
@@ -89,27 +92,28 @@ export default {
           this.currentType = 'sell'
           break
       }
+      // 使得两个tabControl的index值保持一致
+      this.$refs.tabControl1.currentIndex = index
+      this.$refs.tabControl2.currentIndex = index
     },
     // 监听返回按钮
     backClick() {
       this.$refs.scroll.scrollTo(0, 0)
     },
+
     // 监听内容滚动
     contentScroll(position) {
+      // 判断BackTop是否显示
       this.isShowScroll = (-position.y) > 600
+
+      // 控制导航栏的显示
+      this.isTabFixed = (-position.y) > this.tabOffsetTop
     },
     loadMore() {
       this._getHomeGoods(this.currentType)
     },
-    // 防抖函数
-    debounce(func, delay) {
-      let timer = null
-      if (timer) clearInterval(timer)
-      return function(...args) {
-        timer = setTimeout(() => {
-          func.apply(this, args)
-        }, delay)
-      }
+    imageSwiperLoaded() {
+      this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
     },
     /* 网络请求相关代码 */
     _getMultidata() {
@@ -132,26 +136,30 @@ export default {
 
 <style scoped>
   #home {
-    padding-top: 44px;
+    /* content使用absolute定位，不再需要padding-top */
+    /* padding-top: 44px; */
     height: 100vh; /*  vh表示相对于视框的高度 */
     position: relative;
   }
   .home-nav {
     background-color: var(--color-tint);
     color: #fff;
-    position: fixed;
+    /* 通过Scroll定位布局管理，不再需要fixed，删除这部分代码 
+       在使用浏览器原生滚动时，为了让导航不跟随一起滚动
+    */
+    /* position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 9;
+    z-index: 9; */
   }
   .tab-control {
-    background-color: #fff;
-    position: sticky;
-    top: 44px;
+    position: relative;
     z-index: 9;
+    background-color: #fff;
   }
   .content {
+    overflow: hidden;
     position: absolute;
     top: 44px;
     bottom: 49px;

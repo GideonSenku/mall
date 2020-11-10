@@ -86,3 +86,12 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 9. 防抖debounce函数
    > 对于refresh非常频繁的问题，进行防抖操作
+
+10. 如何拿到子组件的`offsetTop`?
+   > `this.$refs.componentName.$el.offsetTop`
+   > 在tabControl实际应用中记录`offsetTop`高度值，以便于在Scroll中使用
+11. 在`Better-Scroll`中控制管理下，单独控制`TabControl`吸附
+   > 在此场景下很难达到预期的效果,可新增一个`TabControl`脱离`BS`的管理
+   1) 记录`BS`中的`TabControl`的`offsetTop`
+   2) `BS`的滚动距离与`offsetTop`进行比较
+   3) 使用`v-show`控制其显示与隐藏(距离达到则显示，未到达则隐藏)
