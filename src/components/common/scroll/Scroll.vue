@@ -49,8 +49,10 @@ export default {
     },
     refresh() {
       this.bscroll && this.bscroll.refresh()
+    },
+    getScrollY() {
+      return this.bscroll ? this.bscroll.y : 0
     }
-
   }
 }
 </script>

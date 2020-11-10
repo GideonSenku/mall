@@ -55,7 +55,8 @@ export default {
       currentType: 'pop',
       isShowScroll: false,
       tabOffsetTop: 0,
-      isTabFixed: false
+      isTabFixed: false,
+      saveY: 0
     }
   },
   created() {
@@ -76,6 +77,13 @@ export default {
     showGoods() {
       return this.goods[this.currentType].list
     }
+  },
+  activated() {
+    this.$refs.scroll.y = this.saveY
+    this.$refs.scroll.refresh()
+  },
+  deactivated() {
+    this.saveY = this.$refs.scroll.getScrollY()
   },
   methods: {
     /* 事件相关代码 */
