@@ -95,3 +95,20 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
    1) 记录`BS`中的`TabControl`的`offsetTop`
    2) `BS`的滚动距离与`offsetTop`进行比较
    3) 使用`v-show`控制其显示与隐藏(距离达到则显示，未到达则隐藏)
+
+12. 在数据想过于复杂时，可以创建一个类来对数据进行过滤
+   > 在DetailBaseInfo中使用该项原则
+   ```js
+   export class Goods {
+   constructor(itemInfo, columns, services) {
+      this.title = itemInfo.title
+      this.desc = itemInfo.desc
+      this.newPrice = itemInfo.price
+      this.oldPrice = itemInfo.oldPrice
+      this.discount = itemInfo.discountDesc
+      this.columns = columns
+      this.services = services
+      this.realPrice = itemInfo.lowNowPrice
+     }
+   }
+   ```
