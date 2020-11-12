@@ -3,6 +3,7 @@
       <detail-nav-bar/>
       <detail-swiper :images="topImages"/>
       <detail-base-info :goods="goods"/>
+      <detail-shop-info :shop="shop"/>
   </div>
 </template>
 
@@ -10,7 +11,9 @@
 import DetailNavBar from './childrenComps/DetailNavBar'
 import DetailSwiper from './childrenComps/DetailSwiper'
 import DetailBaseInfo from './childrenComps/DetailBaseInfo'
-import { getDetails, Goods } from 'network/detail'
+import DetailShopInfo from './childrenComps/DetailShopInfo'
+
+import { getDetails, Goods, Shop } from 'network/detail'
 
 export default {
   name: 'Detail',
@@ -18,7 +21,8 @@ export default {
     return {
       iid: null,
       topImages: [],
-      goods: {}
+      goods: {},
+      shop: {}
     }
   },
   created() {
@@ -27,13 +31,15 @@ export default {
       const data = res.result
       this.topImages = data.itemInfo.topImages
       this.goods = new Goods(data.itemInfo, data.columns, data.shopInfo.services)
+      this.shop = new Shop(data.shopInfo)
     })
 
   },
   components: {
     DetailNavBar,
     DetailSwiper,
-    DetailBaseInfo
+    DetailBaseInfo,
+    DetailShopInfo
   }
 }
 </script>
