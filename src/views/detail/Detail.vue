@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     imgLoad() {
-      this.$refs.scroll.refresh()
+      this.refresh()
     }
   },
   components: {

@@ -89,6 +89,16 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 9. 防抖debounce函数
    > 对于refresh非常频繁的问题，进行防抖操作
+   ```js
+   export function debounce(func, delay) { // 防抖函数
+   let timer = null
+   return function (...args) {
+     if (timer) clearTimeout(timer)
+     timer = setTimeout(() => {
+       func.apply(this, args)
+     }, delay)
+   }
+   ```
 
 10. 如何拿到子组件的`offsetTop`?
    > `this.$refs.componentName.$el.offsetTop`
