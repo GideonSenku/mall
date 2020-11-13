@@ -79,7 +79,7 @@ export default {
     }
   },
   activated() {
-    this.$refs.scroll.y = this.saveY
+    this.$refs.scroll.scrollTo(0, this.saveY, 100)
     this.$refs.scroll.refresh()
   },
   deactivated() {

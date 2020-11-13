@@ -112,3 +112,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
      }
    }
    ```
+
+13. `keep-alive`遇见`vue-router`
+    > 在`keep-alive`中可以记录组件的状态，include或者exclude属性的值必须保持大小写一致
