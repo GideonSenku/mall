@@ -8,6 +8,7 @@
       <detail-images-info :images-info="detailInfo" @imgLoad="imgLoad" />
       <detail-param-info :param-info="paramsInfo"/>
       <detail-comment-info :comment-info="commentInfo"/>
+      <goods-list :goods="recommends"/>
     </scroll>
   </div>
 </template>
@@ -17,15 +18,20 @@ import DetailNavBar from './childrenComps/DetailNavBar'
 import DetailSwiper from './childrenComps/DetailSwiper'
 import DetailBaseInfo from './childrenComps/DetailBaseInfo'
 import DetailShopInfo from './childrenComps/DetailShopInfo'
-import DetailImagesInfo from './childrenComps/DetailImagesInfo.vue'
-import DetailParamInfo from './childrenComps/DetailParamInfo.vue'
-import DetailCommentInfo from './childrenComps/DetailCommentInfo.vue'
+import DetailImagesInfo from './childrenComps/DetailImagesInfo'
+import DetailParamInfo from './childrenComps/DetailParamInfo'
+import DetailCommentInfo from './childrenComps/DetailCommentInfo'
 import Scroll from 'components/common/scroll/Scroll'
 
-import { getDetails, Goods, Shop, GoodsParams } from 'network/detail'
+import GoodsList from 'components/content/goods/GoodsList'
+
+import { getDetails, getRecommend, Goods, Shop, GoodsParams } from 'network/detail'
+
+import { mixin } from 'common/mixin'
 
 export default {
   name: 'Detail',
+  mixins: [mixin],
   data() {
     return {
       iid: null,
@@ -34,7 +40,8 @@ export default {
       shop: {},
       detailInfo: {},
       paramsInfo: {},
-      commentInfo: {}
+      commentInfo: {},
+      recommends: [],
     }
   },
   created() {
@@ -52,11 +59,21 @@ export default {
       this.detailInfo = data.detailInfo
       // 5. 保存商品的参数数据
       this.paramsInfo = new GoodsParams(data.itemParams.info, data.itemParams.rule || {})
-      // 获取评论数据
+      // 6. 获取评论数据
       if (data.rate.cRate !== 0) {
         this.commentInfo = data.rate.list[0] || {};
       }
+      // 7. 获取推荐数据
+      getRecommend().then(res => {
+        this.recommends = res.data.list
+      })
     })
+  },
+  mounted() {
+
+  },
+  destroyed() {
+    this.$bus.$off('itemImageLoad', this.imageLoadListener)
   },
   methods: {
     imgLoad() {
@@ -71,6 +88,7 @@ export default {
     DetailImagesInfo,
     DetailParamInfo,
     DetailCommentInfo,
+    GoodsList,
     Scroll
   }
 }

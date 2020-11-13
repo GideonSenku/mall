@@ -30,8 +30,11 @@ import FeatureView from './childrenComps/FeatureView'
 
 import { getMultidata, getHomeGoods } from 'network/home'
 import { debounce } from 'common/utils'
+import { mixin } from 'common/mixin'
+
 export default {
   name: 'Home',
+  mixins: [mixin],
   components: {
     NavBar,
     HomeSwiper,
@@ -56,7 +59,7 @@ export default {
       isShowScroll: false,
       tabOffsetTop: 0,
       isTabFixed: false,
-      saveY: 0
+      saveY: 0,
     }
   },
   created() {
@@ -68,10 +71,11 @@ export default {
 
   },
   mounted() {
-    const refresh = debounce(this.$refs.scroll.refresh, 100)
-    this.$bus.$on('itemImageLoad', () => {
-      refresh()
-    })
+    // const refresh = debounce(this.$refs.scroll.refresh, 100)
+    // this.imageLoadListener = () => {
+    //   refresh()
+    // }
+    // this.$bus.$on('itemImageLoad', this.imageLoadListener)
   },
   computed: {
     showGoods() {
@@ -84,6 +88,7 @@ export default {
   },
   deactivated() {
     this.saveY = this.$refs.scroll.getScrollY()
+    this.$bus.$off('itemImageLoad', this.imageLoadListener)
   },
   methods: {
     /* 事件相关代码 */
