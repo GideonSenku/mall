@@ -138,4 +138,13 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
     }
 
     ```
-
+15. `Detail`组件中，点击标题，滚动到对应的主题
+   - 在detail中监听标题的点击，获取index
+   - 滚动到对应的主题
+      - 获取所有子组件的`offsetTop`
+      - 如何获取到正确的`offsetTop`？
+         1. `created`中不可以,DOM还未挂载
+         2. `mounted`中不可以,数据还未获取到
+         3. 获取数据的回调中也不行,DOM还没有渲染完毕
+         4. `$nextTick`也不行，图片高度没有被计算在内
+         5. 在图片加载完成后，获取的高度才是正确的
