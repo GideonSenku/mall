@@ -1,19 +1,22 @@
 <template>
-  <div>
+  <div class="cart">
       <nav-bar class="nav-bar">
         <div slot="center">购物车({{ length }})</div>
       </nav-bar>
+      <cart-list/>
   </div>
 </template>
 
 <script>
 import NavBar from 'components/common/navbar/NavBar'
+import CartList from './child/CartList'
 
 import { mapGetters } from 'vuex'
 export default {
   name: 'Cart',
   components: {
     NavBar,
+    CartList
   },
   computed: {
     ...mapGetters({
