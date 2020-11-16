@@ -10,6 +10,8 @@
       <detail-comment-info ref="comments" :comment-info="commentInfo"/>
       <goods-list ref="recommends" :goods="recommends"/>
     </scroll>
+    <detail-bottom-bar/>
+    <back-top @click.native="backClick" v-show="isShowScroll" class="back-top"/>
   </div>
 </template>
 
@@ -30,11 +32,11 @@ import GoodsList from 'components/content/goods/GoodsList'
 import { getDetails, getRecommend, Goods, Shop, GoodsParams } from 'network/detail'
 
 import { debounce } from 'common/utils'
-import { mixin } from 'common/mixin'
+import { imageLoadMixin, backTopMixin } from 'common/mixin'
 
 export default {
   name: 'Detail',
-  mixins: [mixin],
+  mixins: [imageLoadMixin, backTopMixin],
   data() {
     return {
       iid: null,
@@ -110,6 +112,7 @@ export default {
           this.$refs.nav.currentIndex = this.currentIndex
         }
       }
+      this.listenShowBackTop(position)
     }
   },
   components: {
@@ -145,6 +148,9 @@ export default {
     right: 0;
     overflow: hidden;
     background-color: #fff;
+    z-index: 9;
+  }
+  .back-top {
     z-index: 9;
   }
 </style scoped>

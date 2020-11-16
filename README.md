@@ -127,7 +127,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
    ```
 
 13. `keep-alive`遇见`vue-router`
-    > 在`keep-alive`中可以记录组件的状态，include或者exclude属性的值必须保持大小写一致
+    > 在`keep-alive`中可以记录组件的状态，include或者exclude属性的值**必须保持大小写一致**
 
 14. 如果在多个组件中使用相同的钩子函数或者`data`，可选`mixins`(混入)
     > 在Home和Detail组件需要使用防抖操作以及事件总线的监听，使用mixins
@@ -148,3 +148,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
          3. 获取数据的回调中也不行,DOM还没有渲染完毕
          4. `$nextTick`也不行，图片高度没有被计算在内
          5. 在图片加载完成后，获取的高度才是正确的
+
+16. 雪碧图的使用
+    > 封装`detail`组件时，底部按钮使用到雪碧图，可以有效的提高性能
+

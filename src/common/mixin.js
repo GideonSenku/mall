@@ -1,5 +1,8 @@
 import { debounce } from './utils'
-export const mixin = {
+import { minBackPos } from './const'
+import BackTop from 'components/content/backTop/BackTop'
+
+export const imageLoadMixin = {
   data() {
     return {
         imageLoadListener: null,
@@ -12,5 +15,25 @@ export const mixin = {
       this.refresh()
     }
     this.$bus.$on('itemImageLoad', this.imageLoadListener)
+  }
+}
+
+export const backTopMixin = {
+  components: {
+    BackTop
+  },
+  data() {
+    return {
+      isShowScroll: false,
+    }
+  },
+  methods: {
+    listenShowBackTop(position) {
+      this.isShowScroll = (-position.y) > minBackPos
+    },
+    // 监听返回按钮
+    backClick() {
+      this.$refs.scroll.scrollTo(0, 0)
+    },
   }
 }

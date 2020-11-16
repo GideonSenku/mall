@@ -22,7 +22,6 @@ import NavBar from 'components/common/navbar/NavBar'
 import Scroll from 'components/common/scroll/Scroll'
 import TabControl from 'components/content/tabcontrol/TabControl'
 import GoodsList from 'components/content/goods/GoodsList'
-import BackTop from 'components/content/backTop/BackTop'
 
 import HomeSwiper from './childrenComps/HomeSwiper'
 import RecommendView from './childrenComps/RecommendView'
@@ -30,11 +29,11 @@ import FeatureView from './childrenComps/FeatureView'
 
 import { getMultidata, getHomeGoods } from 'network/home'
 import { debounce } from 'common/utils'
-import { mixin } from 'common/mixin'
+import { imageLoadMixin, backTopMixin } from 'common/mixin'
 
 export default {
   name: 'Home',
-  mixins: [mixin],
+  mixins: [imageLoadMixin, backTopMixin],
   components: {
     NavBar,
     HomeSwiper,
@@ -43,7 +42,6 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
-    BackTop
   },
   data() {
     return {
@@ -56,7 +54,6 @@ export default {
         'sell': {page: 0, list: []}
       },
       currentType: 'pop',
-      isShowScroll: false,
       tabOffsetTop: 0,
       isTabFixed: false,
       saveY: 0,
@@ -109,15 +106,11 @@ export default {
       this.$refs.tabControl1.currentIndex = index
       this.$refs.tabControl2.currentIndex = index
     },
-    // 监听返回按钮
-    backClick() {
-      this.$refs.scroll.scrollTo(0, 0)
-    },
 
     // 监听内容滚动
     contentScroll(position) {
       // 判断BackTop是否显示
-      this.isShowScroll = (-position.y) > 600
+      this.listenShowBackTop(position)
 
       // 控制导航栏的显示
       this.isTabFixed = (-position.y) > this.tabOffsetTop
