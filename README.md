@@ -152,3 +152,19 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 16. 雪碧图的使用
     > 封装`detail`组件时，底部按钮使用到雪碧图，可以有效的提高性能
 
+17. `mapGetters` 辅助函数
+    > 辅助函数仅仅是将 store 中的 getter 映射到局部计算属性
+    ```js
+    import { mapGetters } from 'vuex'
+    export default {
+    // ...
+    computed: {
+    // 使用对象展开运算符将 getter 混入 computed 对象中
+       ...mapGetters([
+           'doneTodosCount',
+           'anotherGetter',
+           // ...
+         ])
+       }
+    }
+    ```
