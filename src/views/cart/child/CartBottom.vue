@@ -1,9 +1,8 @@
 <template>
   <div class="cart-bottom-bar">
       <div class="cart-bottom-check">
-        <check-box  class="checked-all">
-          全选
-        </check-box>
+        <check-box @click.native="chooseall" class="checked-all" :isCheck="checkall"/>
+        <span>全选</span>
       </div>
       <div class="cart-bottom-price">
         合计：
@@ -24,6 +23,12 @@ export default {
   components: {
     CheckBox
   },
+  methods: {
+    chooseall() {
+    const state = !this.checkall
+      this.cartList.forEach(cartitem => cartitem.checked = state)
+    }
+  },
   computed: {
     ...mapGetters(['cartList']),
     totalPrice() {
@@ -35,6 +40,9 @@ export default {
     },
     checkedLength() {
       return this.cartList.filter(cartitem => cartitem.checked).length
+    },
+    checkall() {
+      return this.cartList.length !==0 && this.checkedLength === this.cartList.length
     }
   }
 }
@@ -54,8 +62,21 @@ export default {
   padding: 0 10px;
   border-top: 1px solid #cccccc;
 }
+.cart-bottom-check {
+    display: flex;
+}
+.checked-all {
+    margin-top: 2px;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+.cart-bottom-check span {
+    margin-top: 3px;
+    text-align: center;
+}
 .cart-bottom-price {
-  margin-left: 50px;
+  margin-left: 40px;
 }
 .cart-bottom-price span {
   color: red;

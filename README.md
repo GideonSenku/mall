@@ -168,3 +168,12 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
        }
     }
     ```
+18. 全选和反选
+    > 购物车的全选和反选的思考
+    1. 是否显示全选状态(isCheck)？根据`cartList.list`长度与`cartListItem`中`checked`的长度判读
+    2. 全选的点击事件
+      - 对`cartList.list`中的每个元素的`checked`根据全选的状态，即`checkall`，统一设定`true`或`false`
+        > `this.cartList.forEach(cartitem => cartitem.checked = !this.checkall)`
+      - 出现的bug，当点击时状态保持不一致，即非全选状态
+      - 思考原因：点击事件不仅仅改变了内部的`checked`值，同时`this.checkall`也发生了改变，导致`cartlist`遍历时数据保持不一致(既有`false`也有`true`)
+      - 解决方式：定义一个常量`const state = !this.checkall`，提前记录状态值，防止在遍历时数据的变化
