@@ -10,6 +10,9 @@
                   {{ title }}
               </div>
           </div>
+          <div slot="right" class="go-cart"  @click="goCart">
+            <img src="~assets/img/profile/cart.svg" alt="" srcset="">
+          </div>
       </nav-bar>
   </div>
 </template>
@@ -34,6 +37,9 @@ export default {
     },
     back() {
         this.$router.back()
+    },
+    goCart() {
+      this.$router.push('/cart')
     }
   }
 }
@@ -52,5 +58,10 @@ export default {
     }
     .back img {
         margin-top: 11px;
+    }
+    .go-cart img {
+      margin-top: 10px;
+      width: 24px;
+      height: 24px;
     }
 </style>
