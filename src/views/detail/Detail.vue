@@ -12,6 +12,7 @@
     </scroll>
     <detail-bottom-bar @addCart="addToCart"/>
     <back-top @click.native="backClick" v-show="isShowScroll" class="back-top"/>
+    <toast :message="message" :isShow="isShow"/>
   </div>
 </template>
 
@@ -26,13 +27,15 @@ import DetailCommentInfo from './childrenComps/DetailCommentInfo'
 import DetailBottomBar from './childrenComps/DetailBottomBar'
 
 import Scroll from 'components/common/scroll/Scroll'
-
+import Toast from 'components/common/toast/Toast'
 import GoodsList from 'components/content/goods/GoodsList'
 
 import { getDetails, getRecommend, Goods, Shop, GoodsParams } from 'network/detail'
 
 import { debounce } from 'common/utils'
 import { imageLoadMixin, backTopMixin } from 'common/mixin'
+
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Detail',
@@ -49,7 +52,9 @@ export default {
       recommends: [],
       themeTopY: [],
       getOffsetTop: null,
-      currentIndex: 0
+      currentIndex: 0,
+      message: '',
+      isShow: false
     }
   },
   created() {
@@ -93,6 +98,7 @@ export default {
     this.$bus.$off('itemImageLoad', this.imageLoadListener)
   },
   methods: {
+    ...mapActions(['addCart']),
     imgLoad() {
       this.refresh()
       this.getOffsetTop()
@@ -122,7 +128,16 @@ export default {
       product.desc = this.goods.desc
       product.price = this.goods.realPrice
       product.iid = this.iid
-      this.$store.dispatch('addCart', product)
+      // this.$store.dispatch('addCart', product)
+      this.addCart(product).then(res => {
+        this.message = res
+        this.isShow = true
+        setTimeout(() => {
+          this.message = ''
+          this.isShow = false
+        }, 1500);
+        console.log(res)
+      })
     }
   },
   components: {
@@ -135,7 +150,8 @@ export default {
     DetailCommentInfo,
     GoodsList,
     DetailBottomBar,
-    Scroll
+    Scroll,
+    Toast
   }
 }
 </script>

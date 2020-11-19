@@ -8,11 +8,15 @@ export default {
     state,
     commit
   }, payload) {
-    let oldProduct = state.cartList.find(element => element.iid === payload.iid)
-    if (oldProduct) {
-      commit(Add_Goods_Num, oldProduct)
-    } else {
-      commit(Add_To_Cart, payload)
-    }
+    return new Promise((resolve, reject) => {
+      let oldProduct = state.cartList.find(element => element.iid === payload.iid)
+      if (oldProduct) {
+        commit(Add_Goods_Num, oldProduct)
+        resolve('商品数量+1')
+      } else {
+        commit(Add_To_Cart, payload)
+        resolve('添加新的商品')
+      }
+    })
   }
 }
