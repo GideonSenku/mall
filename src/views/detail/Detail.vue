@@ -130,13 +130,14 @@ export default {
       product.iid = this.iid
       // this.$store.dispatch('addCart', product)
       this.addCart(product).then(res => {
-        this.message = res
-        this.isShow = true
-        setTimeout(() => {
-          this.message = ''
-          this.isShow = false
-        }, 1500);
-        console.log(res)
+        // this.message = res
+        // this.isShow = true
+        // setTimeout(() => {
+        //   this.message = ''
+        //   this.isShow = false
+        // }, 1500);
+        // console.log(res)
+        this.$toast.show(res)
       })
     }
   },

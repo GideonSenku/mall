@@ -7,14 +7,20 @@
 <script>
 export default {
   name: 'Toast',
-  props: {
-    message: {
-      type: String,
-      default: ''
-    },
-    isShow: {
-      type: Boolean,
-      default: false
+  data(){
+    return {
+      message: '',
+      isShow: false
+    }
+  },
+  methods: {
+    show(message = 'hello,world', time = 1500) {
+      this.message = message
+      this.isShow = true
+      setTimeout(() => {
+        this.message = ''
+        this.isShow = false
+      }, time)
     }
   }
 }

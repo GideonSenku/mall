@@ -76,7 +76,7 @@ export default {
     text-align: center;
 }
 .cart-bottom-price {
-  margin-left: 40px;
+  margin-left: 20px;
 }
 .cart-bottom-price span {
   color: red;
