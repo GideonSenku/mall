@@ -9,7 +9,7 @@
         <span>¥ {{ totalPrice }}</span>
         元
       </div>
-      <div class="cart-bottom-btn">
+      <div class="cart-bottom-btn" @click="calcClick">
         <button>提交订单({{ checkedLength }})</button>
       </div>
     </div>
@@ -27,6 +27,11 @@ export default {
     chooseall() {
     const state = !this.checkall
       this.cartList.forEach(cartitem => cartitem.checked = state)
+    },
+    calcClick() {
+      if (!this.checkall) {
+        this.$toast.show('请选择商品')
+      }
     }
   },
   computed: {
