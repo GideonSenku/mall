@@ -136,8 +136,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
        //...
        mixins: [mixin]
     }
-
     ```
+
 15. `Detail`组件中，点击标题，滚动到对应的主题
    - 在detail中监听标题的点击，获取index
    - 滚动到对应的主题
@@ -151,7 +151,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 16. 雪碧图的使用
     > 封装`detail`组件时，底部按钮使用到雪碧图，可以有效的提高性能
-
+    > 核心点是调整`background-position`属性
 17. `mapGetters` 辅助函数
     > 辅助函数仅仅是将 store 中的 getter 映射到局部计算属性
     ```js
@@ -177,3 +177,35 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
       - 出现的bug，当点击时状态保持不一致，即非全选状态
       - 思考原因：点击事件不仅仅改变了内部的`checked`值，同时`this.checkall`也发生了改变，导致`cartlist`遍历时数据保持不一致(既有`false`也有`true`)
       - 解决方式：定义一个常量`const state = !this.checkall`，提前记录状态值，防止在遍历时数据的变化
+
+19. 解决移动端300ms的延迟点击问题
+    > 安装`fastclick`库
+
+20. 图片的懒加载
+    > `vue-lazyload`,[仓库地址](https://github.com/hilongjw/vue-lazyload)
+
+21. px2vw插件->postcss-px-to-viewport
+    > 主要配置`postcss.config.js` [仓库地址](https://github.com/evrone/postcss-px-to-viewport)
+
+22. Vue插件的编写
+    > 用于封装Toast组件，使得在全局状态下可直接使用`$toast`
+    ```js
+      import Toast from './Toast'
+      const obj = {}
+
+      obj.install = (Vue) => {
+      console.log('toast install')
+      // 1. 创建组件构造器并实例化
+      const toastPlugin = Vue.extend(Toast)
+      // 2. new的方式，根据组件构造器，可以创建一个组件对象
+      const toast = new toastPlugin()
+      // 3. 将组件对象，手动挂载到某一个元素上
+      toast.$mount(document.createElement('div'))
+      // 4. toast.$el就是对应的div
+      document.body.appendChild(toast.$el)
+      // 5. 挂载到原型上
+      Vue.prototype.$toast = toast
+      }
+
+      export default obj
+    ```
