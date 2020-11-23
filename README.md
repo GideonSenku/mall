@@ -209,3 +209,5 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
       export default obj
     ```
+23. 动态绑定图片`src`的地址
+    > 可以采用`import`或者`require`的方式动态绑定，需要注意的是: **无法使用别名，只能用相对或绝对地址**
