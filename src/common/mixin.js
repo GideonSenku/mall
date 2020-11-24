@@ -10,7 +10,7 @@ export const imageLoadMixin = {
     }
   },
   mounted() {
-    this.refresh = debounce(this.$refs.scroll.refresh, 100)
+    this.refresh = debounce(this.$refs.scroll.refresh, 200)
     this.imageLoadListener = () => {
       this.refresh()
     }
