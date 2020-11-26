@@ -118,6 +118,7 @@ export default {
           this.$refs.nav.currentIndex = this.currentIndex
         }
       }
+      // mixin方法调用，监听backTop按钮是否显示
       this.listenShowBackTop(position)
     },
     addToCart() {

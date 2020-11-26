@@ -4,11 +4,12 @@
       <div slot="center">商品分类</div>
     </nav-bar>
     <slide-bar :slide-bar-list="categoryList" @slideBarItemClick="slideBarItemClick" />
-    <scroll class="scroll-height">
+    <scroll class="scroll-height" ref="scroll" :probe-type="3" @scroll="scroll">
       <subcategory :category-list="subcategoryList" />
       <tab-control :titles="titleList" @tabClick="tabClick" ref="tabControl" />
       <goods-list :goods="categoryDetailList"/>
     </scroll>
+    <back-top @click.native="backClick" v-show="isShowScroll"/>
   </div>
 </template>
 
@@ -22,8 +23,11 @@ import TabControl from "components/content/tabcontrol/TabControl"
 import GoodsList from "components/content/goods/GoodsList"
 
 import { getCategory, getCategoryDetail, getSubcategory } from "network/category"
+import { imageLoadMixin, backTopMixin } from 'common/mixin'
+
 export default {
   name: "Category",
+  mixins: [backTopMixin, imageLoadMixin],
   data() {
     return {
       // 分类内容数据
@@ -53,6 +57,10 @@ export default {
       // 切换类型数据
       this.getCategoryDetail(this.categoryList[this.currentIndex].miniWallkey, typeList[index])
     },
+    scroll(position) {
+      // 控制是否显示BackTop
+      this.listenShowBackTop(position)
+    },
     // 网络请求相关代码
     getCategory() {
       getCategory().then(res => {
@@ -79,6 +87,10 @@ export default {
   },
   created() {
     this.getCategory()
+  },
+  deactivated() {
+    // 取消对GoodsItem图片加载的监听
+    this.$bus.$off('itemImageLoad', this.imageLoadListener)
   }
 }
 </script>
