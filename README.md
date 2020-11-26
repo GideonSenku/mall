@@ -211,3 +211,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
     ```
 23. 动态绑定图片`src`的地址
     > 可以采用`import`或者`require`的方式动态绑定，需要注意的是: **无法使用别名，只能用相对或绝对地址**
+24. 问题: 项目上线`nginx`服务器时刷新页面出现`404NotFound`
+    > 出现问题的原因: `vue-router`默认使用`hash`模式--使用`URL`的`hash`来模拟一个完整的`URL`,于是当`URL`改变时，页面不会重新加载
+
+    > 问题解决: 在配置文件中加入：`try_files $uri $uri/ /index.html`
+    
+    > `nginx`中`try_files`在你刷新完页面之后会把地址进行重定向处理，就会去找你的真实页面，找到则显示，找不到时会默认显示index页面

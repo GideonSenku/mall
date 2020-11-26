@@ -1,11 +1,11 @@
 <template>
   <div class="profile-list">
-      <div class="profile-item" v-for="(itemUp, index) in itemsUp" :key="index">
+      <div class="profile-item" v-for="itemUp in itemsUp" :key="itemUp.message">
           <img :src="itemUp.img" alt="" srcset="">
           <span>{{itemUp.message}}</span>
       </div>
       <div class="line"></div>
-      <div class="profile-item" v-for="(itemDown, indexD) in itemsDowm" :key="indexD">
+      <div class="profile-item" v-for="itemDown in itemsDowm" :key="itemDown.message">
           <img :src="itemDown.img" alt="" srcset="">
           <span>{{itemDown.message}}</span>
       </div>
